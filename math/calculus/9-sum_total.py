@@ -7,4 +7,5 @@ def summation_i_squared(n):
     """function def summation_i_squared(n): that calculates n!"""
     if not isinstance(n, int) or isinstance(n, bool):
         return None
-    return int(np.sum(np.arange(1, n + 1) ** 2))
+    result = int(np.sum(np.arange(1, n + 1) ** 2))
+    return result
