@@ -13,4 +13,6 @@ def poly_integral(poly, C=0):
         if coef % 1 == 0:
             coef = int(coef)
         inter.append(coef)
+    while len(inter) > 1 and inter[-1] == 0:
+        inter.pop()
     return inter
