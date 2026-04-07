@@ -4,7 +4,6 @@
 
 def summation_i_squared(n):
     """function def summation_i_squared(n): that calculates n!"""
-    if not isinstance(n, int) or isinstance(n, bool):
+    if type(n) is not int or n < 1:
         return None
-    result = n * (n + 1) * (2 * n + 1) // 6
-    return result
+    return n * (n + 1) * (2 * n + 1) // 6
