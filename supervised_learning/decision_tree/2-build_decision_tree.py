@@ -68,7 +68,8 @@ class Node:
             return text
         else:
             text = (
-                f"-> node [feature={self.feature}, threshold={self.threshold}]\n"
+                f"-> node [feature={self.feature},"
+                f" threshold={self.threshold}]\n"
             )
             text += self.left_child_add_prefix(self.left_child.__str__())
             text += self.right_child_add_prefix(self.right_child.__str__())
