@@ -219,8 +219,10 @@ class Decision_Tree():
         leaves = self.get_leaves()
         for leaf in leaves:
             leaf.update_indicator()
-        self.predict = lambda A: np.array([leaf.value for leaf in leaves])\
-        [np.argmax(np.array([leaf.indicator(A) for leaf in leaves]), axis=0)]
+        self.predict = lambda A: (
+            np.array([leaf.value for leaf in leaves])[
+                np.argmax(np.array([leaf.indicator(A)
+                                    for leaf in leaves]), axis=0)])
 
     def pred(self, x):
         """Retourne la prediction pour un individu en parcourant
