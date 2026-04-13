@@ -52,6 +52,8 @@ class Leaf(Node):
         return self.depth
 
     def count_nodes_below(self, only_leaves=False):
+        """Une feuilles retourne toujours 1 car elle est elle meme un
+            seule noeud"""
         return 1
 
 
