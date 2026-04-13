@@ -76,6 +76,7 @@ class Decision_Tree():
         return self.root.max_depth_below()
 
     def count_nodes(self, only_leaves=False):
-        """only_leaves=False retourne le nombre de noeudds et feuilles dans l`arbre,
-            si only_leaves=True retourne uniquement les feuilles"""
+        """only_leaves=False retourne le nombre de noeudds et feuilles
+            dans l`arbre, si only_leaves=True retourne uniquement les
+            feuilles"""
         return self.root.count_nodes_below(only_leaves=only_leaves)
