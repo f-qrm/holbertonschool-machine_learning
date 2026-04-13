@@ -28,12 +28,13 @@ class Node:
     def count_nodes_below(self, only_leaves=False):
         """Si il y a que des feuilles on compte uniquement les feuilles,
             sinon on compte le noeud lui meme (1) plus tous ses descendants
-            (noeuds et feuilles)"""
+            (noeuds et)"""
         if only_leaves:
             return (self.left_child.count_nodes_below(only_leaves=True) +
                     self.right_child.count_nodes_below(only_leaves=True))
         else:
-            return (1 + self.left_child.count_nodes_below() + self.right_child.count_nodes_below())
+            return (1 + self.left_child.count_nodes_below() +
+                    self.right_child.count_nodes_below())
 
 
 class Leaf(Node):
@@ -50,7 +51,7 @@ class Leaf(Node):
             l`arbre"""
         return self.depth
 
-    def count_nodes_below(self, only_leaves=False) :
+    def count_nodes_below(self, only_leaves=False):
         return 1
 
 
@@ -74,5 +75,5 @@ class Decision_Tree():
         """Retourne la profondeur maximale de l`arbre"""
         return self.root.max_depth_below()
 
-    def count_nodes(self, only_leaves=False) :
+    def count_nodes(self, only_leaves=False):
         return self.root.count_nodes_below(only_leaves=only_leaves)
