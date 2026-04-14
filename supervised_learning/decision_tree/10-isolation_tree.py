@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Module pour construire un arbre d`isolation aleatoire"""
 import numpy as np
 
 Node = __import__('8-build_decision_tree').Node
@@ -6,6 +7,8 @@ Leaf = __import__('8-build_decision_tree').Leaf
 
 
 class Isolation_Random_Tree():
+    """Arbre d`isolation aleatoire pour detecter les outliers en
+        mesurant la profondeur a laquelle chaque individu est isole"""
     def __init__(self, max_depth=10, seed=0, root=None):
         self.rng = np.random.default_rng(seed)
         if root:
