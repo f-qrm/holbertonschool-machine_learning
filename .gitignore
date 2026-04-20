@@ -7,3 +7,6 @@ math/linear_algebra/__pycache__/5-across_the_planes.cpython-312.pyc
 
 *.pyc
 __pycache__/
+supervised_learning/data/Binary_Dev.npz
+supervised_learning/data/Binary_Train.npz
+supervised_learning/data/MNIST.npz
