@@ -90,7 +90,7 @@ class Neuron:
             A = self.forward_prop(X)
             self.gradient_descent(X, Y, A, alpha)
             cost = self.cost(Y, A)
-            if verbose and i % step == 0:
+            if verbose and (i % step == 0 or i == iterations):
                 iters.append(i)
                 loss.append(cost)
                 print(f"Cost after {i} iterations: {cost}")
