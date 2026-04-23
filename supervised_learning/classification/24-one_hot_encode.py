@@ -18,6 +18,8 @@ def one_hot_encode(Y, classes):
     """
     if not isinstance(Y, np.ndarray) or not isinstance(classes, int):
         return None
+    if classes < 1 or np.max(Y) >= classes:
+        return None
     else:
         matrix = np.zeros((classes, Y.shape[0]))
         matrix[Y, np.arange(Y.shape[0])] = 1
