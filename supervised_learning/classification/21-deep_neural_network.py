@@ -100,3 +100,28 @@ class DeepNeuralNetwork:
         prediction = (pred >= 0.5).astype(int)
         loss = self.cost(Y, pred)
         return prediction, loss
+
+    def gradient_descent(self, Y, cache, alpha=0.05):
+        """
+            Calculates one pass of gradient descent on the neural network.
+
+            Args:
+                Y (numpy.ndarray): correct labels with shape (1, m).
+                cache (dict): intermediary values of the network.
+            alpha (float): learning rate.
+        """
+        m = Y.shape[1]
+        dZ = cache['A' + str(self.L)] - Y
+        for l_number in range(self.__L, 0, -1):
+            dW = 1 / m * np.dot(dZ, cache['A' + str(l_number - 1)].T)
+            db = 1 / m * np.sum(dZ, axis=1, keepdims=True)
+            if l_number > 1:
+                dZ = (
+                    np.dot(self.weights['W' + str(l_number)].T, dZ) *
+                    cache['A' + str(l_number - 1)] *
+                    (1 - cache['A' + str(l_number - 1)])
+                    )
+            new_W = self.weights['W' + str(l_number)] - alpha * dW
+            new_b = self.weights['b' + str(l_number)] - alpha * db
+            self.weights['W' + str(l_number)] = new_W
+            self.weights['b' + str(l_number)] = new_b
