@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Module that builds a neural network using Keras."""
 import tensorflow.keras as K
 
