@@ -78,7 +78,7 @@ class DeepNeuralNetwork:
                 a_sig = e_z / np.sum(e_z, axis=0, keepdims=True)
             else:
                 if self.__activation == 'sig':
-                    a_sig = 1 / (1 + p.exp(-Z))
+                    a_sig = 1 / (1 + np.exp(-Z))
                 else:
                     a_sig = np.tanh(Z)
             self.__cache['A' + str(l_number)] = a_sig
