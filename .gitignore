@@ -10,3 +10,4 @@ __pycache__/
 supervised_learning/data/Binary_Dev.npz
 supervised_learning/data/Binary_Train.npz
 supervised_learning/data/MNIST.npz
+supervised_learning/classification/27-saved.pkl
