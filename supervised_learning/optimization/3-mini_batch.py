@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-shuffle_data = __import__('2-shuffle_data').shuffle_data
 """Module for creating mini-batches for gradient descent"""
+shuffle_data = __import__('2-shuffle_data').shuffle_data
 
 
 def create_mini_batches(X, Y, batch_size):
