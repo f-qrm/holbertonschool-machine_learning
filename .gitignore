@@ -17,3 +17,5 @@ data/Binary_Dev.npz
 data/Binary_Train.npz
 data/MNIST.npz
 data/model.h5
+supervised_learning/error_analysis/confusion.npz
+data/labels_logits.npz
