@@ -21,3 +21,4 @@ data/model.h5
 supervised_learning/error_analysis/confusion.npz
 data/labels_logits.npz
 data/model_reg.h5
+data/animals_1.npz
