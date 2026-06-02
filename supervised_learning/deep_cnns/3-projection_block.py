@@ -16,28 +16,20 @@ def projection_block(A_prev, filters, s=2):
     """
     F11, F3, F12 = filters
     init = K.initializers.HeNormal(seed=0)
-
-    # Main path
     X = K.layers.Conv2D(F11, (1, 1), strides=s, padding='same',
                         kernel_initializer=init)(A_prev)
     X = K.layers.BatchNormalization(axis=3)(X)
     X = K.layers.Activation('relu')(X)
-
     X = K.layers.Conv2D(F3, (3, 3), padding='same',
                         kernel_initializer=init)(X)
     X = K.layers.BatchNormalization(axis=3)(X)
     X = K.layers.Activation('relu')(X)
-
     X = K.layers.Conv2D(F12, (1, 1), padding='same',
                         kernel_initializer=init)(X)
     X = K.layers.BatchNormalization(axis=3)(X)
-
-    # Shortcut path
     shortcut = K.layers.Conv2D(F12, (1, 1), strides=s, padding='same',
                                kernel_initializer=init)(A_prev)
     shortcut = K.layers.BatchNormalization(axis=3)(shortcut)
-
-    # Add + ReLU
     X = K.layers.Add()([X, shortcut])
     X = K.layers.Activation('relu')(X)
 
