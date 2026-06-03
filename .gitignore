@@ -22,3 +22,4 @@ supervised_learning/error_analysis/confusion.npz
 data/labels_logits.npz
 data/model_reg.h5
 data/animals_1.npz
+supervised_learning/transfer_learning/cifar10.h5
