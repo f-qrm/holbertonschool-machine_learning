@@ -23,3 +23,8 @@ data/labels_logits.npz
 data/model_reg.h5
 data/animals_1.npz
 supervised_learning/transfer_learning/cifar10.h5
+supervised_learning/object_detection/coco_classes.txt
+.gitignore
+supervised_learning/object_detection/yolo_images.zip
+.gitignore
+supervised_learning/object_detection/yolo.h5
