@@ -307,15 +307,37 @@ class Yolo:
         return np.array(pimages), np.array(images_shape)
 
     def show_boxes(self, image, boxes, box_classes, box_scores, file_name):
+        """Display image with detected bounding boxes and labels.
+
+        Draws each box in blue and overlays the class name with its
+        score in red. Pressing 's' saves the result to detections/.
+        Any other key closes the window without saving.
+
+        Args:
+            image (numpy.ndarray): image to display
+            boxes (numpy.ndarray): bounding boxes, shape (N, 4)
+            box_classes (numpy.ndarray): class index per box, shape (N,)
+            box_scores (numpy.ndarray): score per box, shape (N,)
+            file_name (str): window title and filename used when saving
+        """
         for i, box in enumerate(boxes):
+            # Dessiner le rectangle en bleu (format BGR)
             cv2.rectangle(image, (int(box[0]), int(box[1])),
                           (int(box[2]), int(box[3])), (255, 0, 0), 2)
-            text = self.class_names[box_classes[i]] + " " + str(round(box_scores[i], 2))
-            cv2.putText(image, text, (int(box[0]), int(box[1]) - 5), cv2.FONT_HERSHEY_SIMPLEX,
+            # Construire l'étiquette : nom de classe + score arrondi
+            label = self.class_names[box_classes[i]]
+            score = str(round(box_scores[i], 2))
+            text = label + " " + score
+            # Afficher le texte en rouge au-dessus du coin supérieur gauche
+            cv2.putText(image, text,
+                        (int(box[0]), int(box[1]) - 5),
+                        cv2.FONT_HERSHEY_SIMPLEX,
                         0.5, (0, 0, 255), 1, cv2.LINE_AA)
+        # Ouvrir la fenêtre d'affichage et attendre une touche
         cv2.imshow(file_name, image)
         key = cv2.waitKey(0)
         if key == ord('s'):
+            # Sauvegarder dans detections/ si l'utilisateur appuie sur 's'
             os.makedirs('detections', exist_ok=True)
             cv2.imwrite('detections/' + file_name, image)
         cv2.destroyAllWindows()
