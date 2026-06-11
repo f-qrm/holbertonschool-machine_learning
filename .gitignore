@@ -28,3 +28,12 @@ supervised_learning/object_detection/coco_classes.txt
 supervised_learning/object_detection/yolo_images.zip
 .gitignore
 supervised_learning/object_detection/yolo.h5
+*.jpg
+supervised_learning/object_detection/yolo_images/yolo/dog.jpg
+.gitignore
+supervised_learning/object_detection/yolo_images/yolo/eagle.jpg
+.gitignore
+supervised_learning/object_detection/yolo_images/yolo/horses.jpg
+supervised_learning/object_detection/yolo_images/yolo/giraffe.jpg
+supervised_learning/object_detection/yolo_images/yolo/person.jpg
+supervised_learning/object_detection/yolo_images/yolo/takagaki.jpg
