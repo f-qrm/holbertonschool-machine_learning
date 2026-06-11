@@ -80,10 +80,13 @@ class Yolo:
             bw = pw * np.exp(t_w)
             bh = ph * np.exp(t_h)
 
+            input_width = self.model.input.shape[2]
+            input_height = self.model.input.shape[1]
+
             bx_pixels = bx / grid_width * image_size[1]
             by_pixels = by / grid_height * image_size[0]
-            bw_pixels = bw / grid_width * image_size[1]
-            bh_pixels = bh / grid_height * image_size[0]
+            bw_pixels = bw / input_width * image_size[1]
+            bh_pixels = bh / input_height * image_size[0]
 
             x1 = bx_pixels - bw_pixels / 2
             y1 = by_pixels - bh_pixels / 2
