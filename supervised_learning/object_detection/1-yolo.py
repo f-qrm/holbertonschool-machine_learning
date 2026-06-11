@@ -95,4 +95,4 @@ class Yolo:
 
             box = np.concatenate([x1, y1, x2, y2], axis=-1)
             boxes.append(box)
-        return (boxes, box_confidences, box_class_probs)
+        return boxes, box_confidences, box_class_probs
