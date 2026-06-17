@@ -100,8 +100,10 @@ class NST:
         """Build a VGG19-based model that outputs style and content features.
 
         Loads VGG19 pretrained on ImageNet (without the fully connected top),
-        freezes all weights, then constructs a multi-output model whose
-        outputs are the activations of style_layers followed by content_layer.
+        replaces MaxPooling2D layers with AveragePooling2D (smoother gradients
+        for style transfer), freezes all weights, then constructs a
+        multi-output model whose outputs are the activations of style_layers
+        followed by content_layer.
 
         Sets:
             self.model (tf.keras.Model): Multi-output feature extractor.
@@ -110,6 +112,15 @@ class NST:
         vgg = tf.keras.applications.VGG19(
             weights='imagenet',
             include_top=False,
+        )
+        # Save then reload with AveragePooling2D instead of MaxPooling2D
+        # to get smoother gradients during style transfer optimization
+        vgg.save("arvgg.h5")
+        vgg = tf.keras.models.load_model(
+            'arvgg.h5',
+            custom_objects={
+                "MaxPooling2D": tf.keras.layers.AveragePooling2D
+            }
         )
         # Freeze VGG19 — we only use it as a fixed feature extractor
         vgg.trainable = False
