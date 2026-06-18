@@ -183,12 +183,18 @@ class NST:
             self.content_feature (tf.Tensor): Raw activation of content_layer
                 from content_image.
         """
+        # Preprocess style image: scale back to [0, 255] for VGG19 input
+        style_preprocessed = tf.keras.applications.vgg19.preprocess_input(
+            self.style_image * 255)
+        # Preprocess content image: scale back to [0, 255] for VGG19 input
+        content_preprocessed = tf.keras.applications.vgg19.preprocess_input(
+            self.content_image * 255)
         # Run style image through the model, last output is content layer
-        outputs = self.model(self.style_image)
+        outputs = self.model(style_preprocessed)
         # All outputs except the last are style layer activations
         style_outputs = outputs[:-1]
         # Run content image through the model to get content representation
-        outputs_content = self.model(self.content_image)
+        outputs_content = self.model(content_preprocessed)
         # Keep only the content layer output (last one)
         self.content_feature = outputs_content[-1]
         # Compute Gram matrix for each style layer activation
