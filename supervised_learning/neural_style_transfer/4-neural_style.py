@@ -223,15 +223,20 @@ class NST:
         """
         # style_output doit être un tensor de rang 4 : (1, h, w, c)
         if (not isinstance(style_output, (tf.Tensor, tf.Variable)) or
-            len(style_output.shape) != 4):
+                len(style_output.shape) != 4):
             raise TypeError("style_output must be a tensor of rank 4")
         # Calcule la matrice de Gram du layer généré
         gram_style = self.gram_matrix(style_output)
         # Nombre de canaux du layer
         c = style_output.shape[-1]
         # gram_target doit avoir la forme (1, c, c)
-        if (not isinstance(gram_target, (tf.Tensor, tf.Variable)) or gram_target.shape[0] != 1 or gram_target.shape[1] != c or gram_target.shape[-1] != c):
-            raise TypeError(f"gram_target must be a tensor of shape [1, {c}, {c}]")
+        if (not isinstance(gram_target, (tf.Tensor, tf.Variable)) or
+                gram_target.shape[0] != 1 or
+                gram_target.shape[1] != c or
+                gram_target.shape[-1] != c):
+            raise TypeError(
+                f"gram_target must be a tensor of shape [1, {c}, {c}]"
+            )
         # Différence entre la Gram du généré et celle du style cible
         diff = gram_style - gram_target
         # Carré élément par élément
