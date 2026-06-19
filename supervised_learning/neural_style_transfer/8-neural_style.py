@@ -378,8 +378,10 @@ class NST:
             raise TypeError(
                 f"generated_image must be a tensor of shape {expected}"
             )
-        # Record forward pass to enable differentiation w.r.t. pixels
+        # Record forward pass; watch is needed for tf.Tensor (variables are
+        # tracked automatically, but tensors are not)
         with tf.GradientTape() as tape:
+            tape.watch(generated_image)
             J, J_content, J_style = self.total_cost(generated_image)
         # Differentiate total cost w.r.t. each pixel of generated_image
         gradients = tape.gradient(J, generated_image)
