@@ -486,4 +486,7 @@ class NST:
         Returns:
             tf.Tensor: Scalar variational cost.
         """
+        if (not isinstance(generated_image, (tf.Tensor, tf.Variable)) or
+            len(generated_image.shape) not in (3, 4)):
+            raise TypeError("image must be a tensor of rank 3 or 4")
         return tf.image.total_variation(generated_image)[0]
