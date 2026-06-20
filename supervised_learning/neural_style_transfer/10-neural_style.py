@@ -481,12 +481,20 @@ class NST:
         a smoother generated image with less high-frequency noise.
 
         Args:
-            generated_image (tf.Tensor): Image of shape (1, nh, nw, 3).
+            generated_image (tf.Tensor): Image of shape (1, nh, nw, 3) or
+                (nh, nw, 3).
 
         Returns:
             tf.Tensor: Scalar variational cost.
+
+        Raises:
+            TypeError: If generated_image is not a tf.Tensor or tf.Variable
+                of rank 3 or 4.
         """
         if (not isinstance(generated_image, (tf.Tensor, tf.Variable)) or
                 len(generated_image.shape) not in (3, 4)):
             raise TypeError("image must be a tensor of rank 3 or 4")
-        return tf.image.total_variation(generated_image)[0]
+        tv = tf.image.total_variation(generated_image)
+        if len(generated_image.shape) == 4:
+            return tv[0]
+        return tv
