@@ -8,12 +8,15 @@ class Poisson:
         """Initializes a Poisson distribution instance.
 
             Args:
-                data (list): data to estimate the distribution. Defaults to None.
-                lambtha (float): expected number of occurrences. Defaults to 1.
+                data (list): data to estimate the distribution.
+                Defaults to None.
+                lambtha (float): expected number of occurrences.
+                Defaults to 1.
 
             Raises:
                 TypeError: if data is not a list.
-                ValueError: if lambtha is not positive or data has less than 2 values.
+                ValueError: if lambtha is not positive or data has less
+                than 2 values.
         """
         self.lambtha = float(lambtha)
         if data is not None:
