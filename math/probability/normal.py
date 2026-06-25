@@ -35,3 +35,27 @@ class Normal:
         else:
             if stddev <= 0:
                 raise ValueError("stddev must be a positive value")
+
+    def z_score(self, x):
+        """Calculates the z-score of a given x-value.
+
+            Args:
+                x (float): x-value.
+
+            Returns:
+                float: z-score of x.
+        """
+        z = (x - self.mean) / self.stddev
+        return z
+
+    def x_value(self, z):
+        """Calculates the x-value of a given z-score.
+
+            Args:
+                z (float): z-score.
+
+            Returns:
+                float: x-value of z.
+        """
+        x = self.mean + z * self.stddev
+        return x
