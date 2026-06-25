@@ -13,7 +13,8 @@ class Exponential:
 
         Raises:
             TypeError: if data is not a list.
-            ValueError: if lambtha is not positive or data has less than 2 values.
+            ValueError: if lambtha is not positive or data has less than
+            2 values.
         """
         self.lambtha = float(lambtha)
         if data is not None:
