@@ -38,3 +38,30 @@ class Binomial:
                 raise ValueError("n must be a positive value")
             if p <= 0 or p >= 1:
                 raise ValueError("p must be greater than 0 and less than 1")
+
+    def pmf(self, k):
+        """Calculates the PMF value for a given number of successes.
+
+            Args:
+                k (int): number of successes.
+
+            Returns:
+                float: PMF value for k, or 0 if k is out of range.
+        """
+        if not isinstance(k, int):
+            k = int(k)
+        if k < 0 or k > self.n:
+            return 0
+        factorial_k = 1
+        for i in range(1, k+1):
+            factorial_k = factorial_k * i
+        factorial_n = 1
+        for i in range(1, self.n+1):
+            factorial_n = factorial_n * i
+        n_k = self.n - k
+        factorial_nk = 1
+        for i in range(1, n_k+1):
+            factorial_nk = factorial_nk * i
+        coef = factorial_n / (factorial_k * factorial_nk)
+        pmf = coef * self.p ** k * (1 - self.p) ** n_k
+        return pmf
