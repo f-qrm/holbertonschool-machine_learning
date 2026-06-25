@@ -59,3 +59,17 @@ class Normal:
         """
         x = self.mean + z * self.stddev
         return x
+
+    def pdf(self, x):
+        """Calculates the PDF value for a given x-value.
+
+            Args:
+                x (float): x-value.
+
+            Returns:
+                float: PDF value for x.
+        """
+        e = 2.7182818285
+        pi = 3.1415926536
+        pdf = (1 / (self.stddev * (2 * pi)** 0.5)) * e ** (-0.5 * self.z_score(x) ** 2)
+        return pdf
