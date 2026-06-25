@@ -71,5 +71,6 @@ class Normal:
         """
         e = 2.7182818285
         pi = 3.1415926536
-        pdf = (1 / (self.stddev * (2 * pi)** 0.5)) * e ** (-0.5 * self.z_score(x) ** 2)
+        pdf = (1 / (self.stddev * (2 * pi) ** 0.5)) * (
+            e ** (-0.5 * self.z_score(x) ** 2))
         return pdf
