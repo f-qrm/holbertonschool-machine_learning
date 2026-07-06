@@ -23,7 +23,7 @@ def determinant(matrix):
             isinstance(row, list) for row in matrix):
         raise TypeError("matrix must be a list of lists")
     if len(matrix) != len(matrix[0]) and len(matrix[0]) != 0:
-        raise ValueError("matrix must be a square matrix")
+        raise ValueError("matrix must be a non-empty square matrix")
 
     # Cas particulier : matrice 0x0, le déterminant vaut 1 par convention
     if len(matrix[0]) == 0:
