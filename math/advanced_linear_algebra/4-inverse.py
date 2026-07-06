@@ -38,6 +38,6 @@ def inverse(matrix):
             new_row = []
             for j in range(n):
                 # inverse = (1 / det) * adjugate
-                new_row.append(det_a * adj[i][j])
+                new_row.append((1 / det_a) * adj[i][j])
             result.append(new_row)
         return result
