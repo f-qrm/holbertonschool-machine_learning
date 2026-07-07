@@ -15,7 +15,7 @@ def correlation(C):
     if not isinstance(C, np.ndarray):
         raise TypeError("C must be a numpy.ndarray")
     C_sh = C.shape
-    if C_sh[0] != C_sh[1]:
+    if len(C_sh) != 2 or C_sh[0] != C_sh[1]:
         raise ValueError("C must be a 2D square matrix")
     # diag(C) donne les variances, sqrt donne les écarts-types
     strd_dev = np.sqrt(np.diag(C))
