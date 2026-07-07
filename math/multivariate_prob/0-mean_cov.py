@@ -18,7 +18,9 @@ def mean_cov(X):
     arr_sh = X.shape
     if arr_sh[0] < 2:
         raise ValueError("X must contain multiple data points")
+    # keepdims=True garde mean en (1, d) pour un broadcast direct avec X
     mean = np.mean(X, axis=0, keepdims=True)
     X_centered = X - mean
+    # n - 1 (Bessel) car c'est un estimateur non biaisé de la covariance
     cov = 1 / (arr_sh[0] - 1) * np.dot(X_centered.T, X_centered)
     return mean, cov
