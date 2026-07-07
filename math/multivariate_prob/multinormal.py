@@ -25,3 +25,30 @@ class MultiNormal:
         # n - 1 (Bessel) pour un estimateur non biaisé de la covariance
         self.cov = 1 / (data.shape[1] - 1) * np.dot(
             data_centred, data_centred.T)
+
+    def pdf(self, x):
+        """Calculates the PDF at a data point.
+
+        Args:
+            x: numpy.ndarray of shape (d, 1) containing the data point
+                whose PDF should be calculated, d is the number of
+                dimensions of the distribution.
+
+        Returns:
+            The value of the PDF (float).
+        """
+        if not isinstance(x, np.ndarray):
+            raise TypeError("x must be a numpy.ndarray")
+        d = self.mean.shape[0]
+        new = (d, 1)
+        if x.shape != new:
+            raise ValueError(f"x must have the shape ({d}, 1)")
+        det_cov = np.linalg.det(self.cov)
+        inv_cov = np.linalg.inv(self.cov)
+        # A et B sont l'écart (x - mean) transposé et non transposé,
+        # nécessaires pour l'exposant quadratique de la formule du PDF
+        A = (x - self.mean).T
+        B = (x - self.mean)
+        e_exp = (- (1 / 2) * np.dot(np.dot(A, inv_cov), B))
+        pdf = 1 / np.sqrt(((2 * np.pi) ** d) * det_cov) * np.exp(e_exp)
+        return pdf.item()
