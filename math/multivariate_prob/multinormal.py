@@ -49,7 +49,6 @@ class MultiNormal:
         # nécessaires pour l'exposant quadratique de la formule du PDF
         A = (x - self.mean).T
         B = (x - self.mean)
-        e_exp = (- (1 / 2) * np.dot(np.dot(A, inv_cov), B))
+        e_exp = (- (1 / 2) * np.dot(A, np.dot(inv_cov, B)))
         pdf = 1 / np.sqrt(((2 * np.pi) ** d) * det_cov) * np.exp(e_exp)
-        res = pdf.item()
-        return float(res)
+        return pdf.item()
