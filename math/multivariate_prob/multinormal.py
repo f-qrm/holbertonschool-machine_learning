@@ -51,4 +51,5 @@ class MultiNormal:
         B = (x - self.mean)
         e_exp = (- (1 / 2) * np.dot(np.dot(A, inv_cov), B))
         pdf = 1 / np.sqrt(((2 * np.pi) ** d) * det_cov) * np.exp(e_exp)
-        return pdf.item()
+        res = pdf.item()
+        return float(res)
