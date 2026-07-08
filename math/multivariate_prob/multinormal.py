@@ -23,8 +23,8 @@ class MultiNormal:
         self.mean = np.mean(data, axis=1, keepdims=True)
         data_centred = data - self.mean
         # n - 1 (Bessel) pour un estimateur non biaisé de la covariance
-        self.cov = 1 / (data.shape[1] - 1) * np.dot(
-            data_centred, data_centred.T)
+        self.cov = np.dot(
+            data_centred, data_centred.T) / (data.shape[1] - 1)
 
     def pdf(self, x):
         """Calculates the PDF at a data point.
@@ -50,6 +50,6 @@ class MultiNormal:
         A = (x - self.mean).T
         B = (x - self.mean)
         # [0, 0] extrait le scalaire de la matrice (1, 1) obtenue
-        e_exp = (- (1 / 2) * np.dot(A, np.dot(inv_cov, B)))[0, 0]
+        e_exp = (- (1 / 2) * np.dot(np.dot(A, inv_cov), B))[0, 0]
         pdf = 1 / np.sqrt(((2 * np.pi) ** d) * det_cov) * np.exp(e_exp)
         return pdf
