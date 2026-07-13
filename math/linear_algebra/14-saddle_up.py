@@ -4,5 +4,13 @@ import numpy as np
 
 
 def np_matmul(mat1, mat2):
-    """ Matrix multiplication """
+    """Performs matrix multiplication using numpy.
+
+    Args:
+        mat1: a numpy.ndarray.
+        mat2: a numpy.ndarray with a shape compatible with mat1.
+
+    Returns:
+        A new numpy.ndarray containing the matrix product.
+    """
     return np.matmul(mat1, mat2)

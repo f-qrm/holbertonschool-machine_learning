@@ -20,5 +20,7 @@ saved = Deep.load('26-output.pkl')
 A_saved, cost_saved = saved.evaluate(X_train, Y_train)
 
 print(np.array_equal(A, A_saved) and cost == cost_saved)
-alexa@ubuntu-xenial:$ ls 26-output*
-ls: cannot access '26-output*': No such file or directory
+
+# Expected shell output after running this script:
+# alexa@ubuntu-xenial:$ ls 26-output*
+# ls: cannot access '26-output*': No such file or directory

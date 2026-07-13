@@ -3,13 +3,20 @@
 
 
 def matrix_shape(matrix):
+    """Calculates the shape of a matrix.
 
-    """Returns the shape of a matrix as a list of integers"""
+    Args:
+        matrix: a nested list representing a matrix of any dimension.
 
-    element_courant = matrix
-    matrix_shape = []
+    Returns:
+        A list of integers, one per dimension, giving the size of
+        that dimension. Assumes every sub-list at a given depth has
+        the same length.
+    """
+    current = matrix
+    shape = []
 
-    while isinstance(element_courant, list):
-        matrix_shape.append(len(element_courant))
-        element_courant = element_courant[0]
-    return matrix_shape
+    while isinstance(current, list):
+        shape.append(len(current))
+        current = current[0]
+    return shape

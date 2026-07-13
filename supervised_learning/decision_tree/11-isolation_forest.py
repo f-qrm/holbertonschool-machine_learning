@@ -8,6 +8,7 @@ class Isolation_Random_Forest():
     """Foret aleatoire d`isolation qui combine plusieurs arbres
         pour detecter les individus suspects (outliers) en mesurant
         leur profondeur moyenne dans l`arbre"""
+
     def __init__(self, n_trees=100, max_depth=10, min_pop=1, seed=0):
         self.numpy_predicts = []
         self.target = None

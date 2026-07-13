@@ -3,6 +3,12 @@
 
 
 def np_shape(matrix):
-    """ The shape of matrix"""
-    np_shape = matrix.shape
-    return np_shape
+    """Calculates the shape of a numpy.ndarray.
+
+    Args:
+        matrix: a numpy.ndarray.
+
+    Returns:
+        A tuple of integers representing the shape of matrix.
+    """
+    return matrix.shape

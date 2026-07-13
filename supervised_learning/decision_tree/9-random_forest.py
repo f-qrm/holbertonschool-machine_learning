@@ -7,6 +7,7 @@ Decision_Tree = __import__('8-build_decision_tree').Decision_Tree
 class Random_Forest():
     """Une foret aleatoire qui combine plusieurs arbres de decision
         pour faire des predictions par vote majoritaire"""
+
     def __init__(self, n_trees=100, max_depth=10, min_pop=1, seed=0):
         self.numpy_predicts = []
         self.target = None
@@ -38,7 +39,7 @@ class Random_Forest():
         accuracies = []
         for i in range(n_trees):
             T = Decision_Tree(max_depth=self.max_depth, min_pop=self.min_pop,
-                              seed=self.seed+i)
+                              seed=self.seed + i)
             T.fit(explanatory, target)
             self.numpy_preds.append(T.predict)
             depths.append(T.depth())
@@ -58,4 +59,4 @@ class Random_Forest():
         """Calcule la proportion de bonnes predictions sur
             les donnees de test"""
         return np.sum(np.equal(self.predict(test_explanatory),
-                      test_target))/test_target.size
+                      test_target)) / test_target.size

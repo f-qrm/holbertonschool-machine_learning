@@ -9,6 +9,7 @@ Leaf = __import__('8-build_decision_tree').Leaf
 class Isolation_Random_Tree():
     """Arbre d`isolation aleatoire pour detecter les outliers en
         mesurant la profondeur a laquelle chaque individu est isole"""
+
     def __init__(self, max_depth=10, seed=0, root=None):
         self.rng = np.random.default_rng(seed)
         if root:
@@ -78,7 +79,7 @@ class Isolation_Random_Tree():
         """Cree une feuille enfant dont la valeur est sa profondeur
             car on veut savoir a quelle profondeur l`individu a fini"""
         leaf_child = Leaf(node.depth + 1)
-        leaf_child.depth = node.depth+1
+        leaf_child.depth = node.depth + 1
         leaf_child.subpopulation = sub_population
         return leaf_child
 
@@ -108,7 +109,7 @@ class Isolation_Random_Tree():
             np.sum(left_population) <= 1
             or node.depth >= self.max_depth - 1
             or np.sum(left_population) <= 1
-            )
+        )
 
         if is_left_leaf:
             node.left_child = self.get_leaf_child(node, left_population)

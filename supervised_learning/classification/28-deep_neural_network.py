@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 
 class DeepNeuralNetwork:
     """Defines a deep neural network performing binary classification."""
+
     def __init__(self, nx, layers, activation='sig'):
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
@@ -23,7 +24,7 @@ class DeepNeuralNetwork:
         self.__weights = {}
         for l_number in range(1, self.L + 1):
             if not isinstance(layers[l_number - 1], int) or\
-                              layers[l_number - 1] < 1:
+                    layers[l_number - 1] < 1:
                 raise TypeError("layers must be a list of positive integers")
             if l_number == 1:
                 prev_nodes = nx
@@ -97,7 +98,7 @@ class DeepNeuralNetwork:
                 float: the cost of the model.
         """
         m = Y.shape[1]
-        cost = -1/m * np.sum(Y * np.log(A))
+        cost = -1 / m * np.sum(Y * np.log(A))
         return cost
 
     def evaluate(self, X, Y):
@@ -136,7 +137,7 @@ class DeepNeuralNetwork:
                         np.dot(self.weights['W' + str(l_number)].T, dZ) *
                         cache['A' + str(l_number - 1)] *
                         (1 - cache['A' + str(l_number - 1)])
-                        )
+                    )
                 else:
                     dZ = (
                         np.dot(self.weights['W' + str(l_number)].T, dZ) *

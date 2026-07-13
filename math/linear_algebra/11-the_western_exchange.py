@@ -3,6 +3,12 @@
 
 
 def np_transpose(matrix):
-    """transpose matrix"""
-    np_transpose = matrix.transpose()
-    return np_transpose
+    """Transposes a numpy.ndarray.
+
+    Args:
+        matrix: a numpy.ndarray.
+
+    Returns:
+        A new numpy.ndarray with its axes reversed.
+    """
+    return matrix.transpose()

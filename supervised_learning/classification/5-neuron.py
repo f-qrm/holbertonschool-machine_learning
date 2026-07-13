@@ -5,6 +5,7 @@ import numpy as np
 
 class Neuron:
     """ Class that defines a single neuron performing classification """
+
     def __init__(self, nx):
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
@@ -53,8 +54,8 @@ class Neuron:
         """ Update W et b to reduce the loss"""
         m = X.shape[1]
         dZ = A - Y
-        dW = (1/m) * np.matmul(dZ, X.T)
-        db = (1/m) * np.sum(dZ)
+        dW = (1 / m) * np.matmul(dZ, X.T)
+        db = (1 / m) * np.sum(dZ)
         new_W = self.__W - alpha * dW
         new_b = self.__b - alpha * db
         self.__W = new_W

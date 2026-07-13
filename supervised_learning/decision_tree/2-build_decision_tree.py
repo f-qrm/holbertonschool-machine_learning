@@ -6,6 +6,7 @@ import numpy as np
 class Node:
     """ C`est un noed interne de l`arbre, un noeud qui pose une question et
         bifurque a gauche ou a droite"""
+
     def __init__(self, feature=None, threshold=None, left_child=None,
                  right_child=None, is_root=False, depth=0):
         self.feature = feature
@@ -40,20 +41,20 @@ class Node:
         """Ajoute le prefixe +-- et | pour construire
             l`architecture visuelle de l`enfant gauche"""
         lines = text.split("\n")
-        new_text = "    +--"+lines[0]+"\n"
+        new_text = "    +--" + lines[0] + "\n"
         for x in lines[1:]:
             if x:
-                new_text += ("    |  "+x)+"\n"
+                new_text += ("    |  " + x) + "\n"
         return (new_text)
 
     def right_child_add_prefix(self, text):
         """Ajoute le prefixe +-- et des espaces pour construire
             l`architecture visuelle de l`enfant droit"""
         lines = text.split("\n")
-        new_text = "    +--"+lines[0]+"\n"
+        new_text = "    +--" + lines[0] + "\n"
         for x in lines[1:]:
             if x:
-                new_text += ("       "+x)+"\n"
+                new_text += ("       " + x) + "\n"
         return (new_text)
 
     def __str__(self):
@@ -79,6 +80,7 @@ class Node:
 class Leaf(Node):
     """Noeud terminal, il ne pose plus de question, il retourne une valeur
         (la pred. finale)"""
+
     def __init__(self, value, depth=None):
         super().__init__()
         self.value = value
@@ -103,6 +105,7 @@ class Leaf(Node):
 
 class Decision_Tree():
     """Conteneur principale qui gere l`arbre entier"""
+
     def __init__(self, max_depth=10, min_pop=1, seed=0,
                  split_criterion="random", root=None):
         self.rng = np.random.default_rng(seed)

@@ -16,5 +16,5 @@ def normalize(X, m, s):
         Returns:
             numpy.ndarray: The normalized X matrix.
     """
-    X = (X-m) / s
+    X = (X - m) / s
     return X
