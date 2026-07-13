@@ -82,7 +82,6 @@ def intersection(x, n, P, Pr):
 
 
 def marginal(x, n, P, Pr):
-    inter = np.sum(intersection(x, n, P, Pr))
     """
         Calculates the marginal probability of obtaining x successes
         out of n trials, given the hypothetical probabilities P and
@@ -101,4 +100,5 @@ def marginal(x, n, P, Pr):
         Returns:
             float: the marginal probability of obtaining x and n.
     """
+    inter = np.sum(intersection(x, n, P, Pr))
     return inter
