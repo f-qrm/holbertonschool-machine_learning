@@ -38,7 +38,7 @@ supervised_learning/object_detection/yolo_images/yolo/giraffe.jpg
 supervised_learning/object_detection/yolo_images/yolo/person.jpg
 supervised_learning/object_detection/yolo_images/yolo/takagaki.jpg
 supervised_learning/neural_style_transfer/arvgg.h5
-unsupervised_learning/dimensionality_reduction/0-pca.py
+
 .gitignore
 unsupervised_learning/dimensionality_reduction/mnist2500_labels.txt
 .gitignore
