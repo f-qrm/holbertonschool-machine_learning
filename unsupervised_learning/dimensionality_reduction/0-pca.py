@@ -26,6 +26,4 @@ def pca(X, var=0.95):
     ratios = cumulative / summ
     nd = np.argmax(ratios >= var) + 1
     W = V[:nd, :].T
-    print("ratios:", ratios)
-    print("nd:", nd)
     return W
