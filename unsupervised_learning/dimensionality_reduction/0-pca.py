@@ -21,12 +21,16 @@ def pca(X, var=0.95):
             where nd is the new dimensionality of the
             transformed X.
     """
+    # S holds the singular values, one per principal component,
+    # V's rows are the matching principal axes
     U, S, V = np.linalg.svd(X)
     sqr = S
     summ = np.sum(sqr)
+    # running total of variance captured as components are added
     cumulative = np.cumsum(sqr)
     ratios = cumulative / summ
     # index of the first component reaching the target variance
     nd = np.argmax(ratios >= var) + 1
+    # keep only the axes needed to reach that variance
     W = V[:nd, :].T
     return W
