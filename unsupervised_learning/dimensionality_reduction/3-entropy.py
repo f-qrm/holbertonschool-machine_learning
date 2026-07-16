@@ -31,4 +31,4 @@ def HP(Di, beta):
     # Shannon entropy of the resulting distribution
     Hi = np.log2(summ) + (beta * np.sum(Di * j_weight) / summ) / np.log(2)
 
-    return (np.asarray(Hi).item(), Pi)
+    return (np.squeeze(Hi), Pi)
