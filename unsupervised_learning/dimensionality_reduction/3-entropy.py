@@ -24,11 +24,8 @@ def HP(Di, beta):
     # unnormalized Gaussian weights for each neighbor
     j_weight = np.exp(-Di * beta)
     summ = np.sum(j_weight)
-
     # P affinities of the point relative to all other points
     Pi = j_weight / summ
-
     # Shannon entropy of the resulting distribution
-    Hi = np.log2(summ) + (beta * np.sum(Di * j_weight) / summ) / np.log(2)
-
+    Hi = -np.sum(Pi * np.log2(np.maximum(Pi, 1e-12)))
     return (np.squeeze(Hi), Pi)
