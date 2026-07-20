@@ -27,8 +27,10 @@ def initialize(X, k):
     if not isinstance(X, np.ndarray) or X.ndim != 2:
         return None
     n = X.shape[0]
+    # k must be a valid cluster count: at most one centroid per data point
     if not isinstance(k, int) or k <= 0 or k > n:
         return None
+    # bounds per dimension define the uniform distribution's range
     low = X.min(axis=0)
     high = X.max(axis=0)
     d = X.shape[1]
