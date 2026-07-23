@@ -52,24 +52,24 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
     pi, m, S = initialize(X, k)
     if pi is None:
         return None, None, None, None, None
-    # placeholder previous log likelihood, guaranteed to differ from ll
-    ll_prev = 1
+    # placeholder previous log likelihood, guaranteed to differ from l
+    l_prev = 1
     for i in range(iterations):
         # E-step: posterior probabilities and current log likelihood
-        g, ll = expectation(X, pi, m, S)
+        g, l = expectation(X, pi, m, S)  # noqa: E741
         if verbose and i % 10 == 0:
             print("Log Likelihood after {} iterations: {}".format(
-                i, ll.round(5)))
+                i, l.round(5)))
         # M-step: update priors, means and covariances from g
         pi, m, S = maximization(X, g)
         # stop early once the log likelihood stops improving
-        if abs(ll - ll_prev) <= tol:
+        if abs(l - l_prev) <= tol:
             break
-        ll_prev = ll
+        l_prev = l
     # print the final iteration if it wasn't already printed above
     if verbose and i % 10 != 0:
         print("Log Likelihood after {} iterations: {}".format(
-            i, ll.round(5)))
-    # recompute g and ll with the final parameters before returning
-    g, ll = expectation(X, pi, m, S)
-    return pi, m, S, g, ll
+            i, l.round(5)))
+    # recompute g and l with the final parameters before returning
+    g, l = expectation(X, pi, m, S)  # noqa: E741
+    return pi, m, S, g, l
