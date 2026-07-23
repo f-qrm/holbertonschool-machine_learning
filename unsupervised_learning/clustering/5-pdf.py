@@ -33,7 +33,7 @@ def pdf(X, m, S):
     inv = np.linalg.inv(S)
     norm = 1 / np.sqrt(((2 * np.pi) ** d) * det)
     diff = X - m
-    # squared Mahalanobis distance for every point at once
+    # squared Mahalanobis distance fro every point at once
     maha = np.einsum('ij,jk,ik->i', diff, inv, diff)
     exponent = -0.5 * maha
     exp_part = np.exp(exponent)
