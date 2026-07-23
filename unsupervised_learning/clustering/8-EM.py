@@ -55,21 +55,14 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
     # placeholder previous log likelihood, guaranteed to differ from l
     l_prev = 1
     for i in range(iterations):
-        # E-step: posterior probabilities and current log likelihood
-        g, l = expectation(X, pi, m, S)  # noqa: E741
+        g, l = expectation(X, pi, m, S)
         if verbose and i % 10 == 0:
-            print("Log Likelihood after {} iterations: {}".format(
-                i, l.round(5)))
-        # M-step: update priors, means and covariances from g
-        pi, m, S = maximization(X, g)
-        # stop early once the log likelihood stops improving
+            print("Log Likelihood after {} iterations: {}".format(i, l.round(5)))
         if abs(l - l_prev) <= tol:
             break
         l_prev = l
-    # print the final iteration if it wasn't already printed above
+        pi, m, S = maximization(X, g)
     if verbose and i % 10 != 0:
-        print("Log Likelihood after {} iterations: {}".format(
-            i, l.round(5)))
-    # recompute g and l with the final parameters before returning
-    g, l = expectation(X, pi, m, S)  # noqa: E741
+        print("Log Likelihood after {} iterations: {}".format(i, l.round(5)))
+    g, l = expectation(X, pi, m, S)
     return pi, m, S, g, l
