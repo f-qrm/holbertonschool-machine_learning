@@ -34,6 +34,8 @@ def expectation(X, pi, m, S):
     n = X.shape[0]
     if m.shape != (k, d) or S.shape != (k, d, d):
         return None, None
+    if not np.isclose(np.sum(pi), 1):
+        return None, None
     # weighted density of each point under each cluster
     g = np.zeros((k, n))
     for i in range(k):
