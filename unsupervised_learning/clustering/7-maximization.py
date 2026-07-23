@@ -25,6 +25,8 @@ def maximization(X, g):
         return None, None, None
     if X.shape[0] != g.shape[1]:
         return None, None, None
+    if not np.all(np.isclose(np.sum(g, axis=0), 1)):
+        return None, None, None
     k = g.shape[0]
     d = X.shape[1]
     # prior fro each cluster is its average responsibility over all points
