@@ -27,7 +27,7 @@ def maximization(X, g):
         return None, None, None
     k = g.shape[0]
     d = X.shape[1]
-    # prior for each cluster is its average responsibility over all points
+    # prior fro each cluster is its average responsibility over all points
     pi = g.mean(axis=1)
     numerator = g @ X
     denominator = np.sum(g, axis=1)
