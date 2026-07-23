@@ -52,26 +52,26 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
     pi, m, S = initialize(X, k)
     if pi is None:
         return None, None, None, None, None
-    # placeholder previous log likelihood, guaranteed to differ from l
-    l_prev = 1
+    # placeholder previous log likelihood, guaranteed to differ
+    log_likelihood_prev = 1
     for i in range(iterations):
-        g, l = expectation(X, pi, m, S)
+        g, log_likelihood = expectation(X, pi, m, S)
         if verbose and i % 10 == 0:
             print("Log Likelihood after {} iterations: {}".format(
-                i, l.round(5)))
-        if abs(l - l_prev) <= tol:
+                i, log_likelihood.round(5)))
+        if abs(log_likelihood - log_likelihood_prev) <= tol:
             break
-        l_prev = l
+        log_likelihood_prev = log_likelihood
         pi, m, S = maximization(X, g)
     else:
         i += 1
-        g, l = expectation(X, pi, m, S)
+        g, log_likelihood = expectation(X, pi, m, S)
         if verbose:
             print("Log Likelihood after {} iterations: {}".format(
-                i, l.round(5)))
-        return pi, m, S, g, l
+                i, log_likelihood.round(5)))
+        return pi, m, S, g, log_likelihood
     if verbose and i % 10 != 0:
         print("Log Likelihood after {} iterations: {}".format(
-            i, l.round(5)))
-    g, l = expectation(X, pi, m, S)
-    return pi, m, S, g, l
+            i, log_likelihood.round(5)))
+    g, log_likelihood = expectation(X, pi, m, S)
+    return pi, m, S, g, log_likelihood
