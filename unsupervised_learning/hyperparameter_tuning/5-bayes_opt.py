@@ -63,8 +63,10 @@ class BayesianOptimization:
             imp = mu - Y_best - self.xsi
 
         with np.errstate(divide='warn'):
-            Z = imp / sigma
-            EI = imp * norm.cdf(Z) + sigma * norm.pdf(Z)
+            Z = np.where(sigma > 0, imp / sigma, 0.0)
+            EI = np.where(sigma > 0,
+                          imp * norm.cdf(Z) + sigma * norm.pdf(Z),
+                          (0.0))
             # no improvement is possible where the variance is 0
             EI[sigma == 0.0] = 0.0
 
