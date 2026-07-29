@@ -81,11 +81,11 @@ class BayesianOptimization:
             Y_opt: numpy.ndarray of shape (1,), the optimal function
                 value
         """
-        for i in range(iterations):
-            X_next, EI = self.acquisition()
+        for _ in range(iterations):
+            X_next, _ = self.acquisition()
 
             # stop early if the next point has already been sampled
-            if np.any(np.isclose(X_next, self.gp.X)):
+            if np.isin(X_next, self.gp.X):
                 break
 
             Y_next = self.f(X_next)
