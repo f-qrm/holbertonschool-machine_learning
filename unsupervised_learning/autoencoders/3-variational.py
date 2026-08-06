@@ -19,7 +19,12 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
         epsilon = keras.backend.random_normal(shape=keras.backend.shape(mu))
         return mu + keras.backend.exp(log_variance / 2) * epsilon
 
-    # Encoder
+    def reconstruction_loss(x_true, x_pred):
+        """Binary cross-entropy reconstruction loss, scaled by input_dims"""
+        bce = keras.losses.binary_crossentropy(x_true, x_pred)
+        return bce * input_dims
+
+    # --- Encoder ---
     inputs = keras.Input(shape=(input_dims,))
     x = inputs
     for nodes in hidden_layers:
@@ -31,7 +36,7 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
 
     encoder = keras.Model(inputs, [z, mu, log_variance])
 
-    # Decoder
+    # --- Decoder ---
     latent_inputs = keras.Input(shape=(latent_dims,))
     y = latent_inputs
     for nodes in reversed(hidden_layers):
@@ -40,18 +45,18 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
 
     decoder = keras.Model(latent_inputs, outputs)
 
-    # Full autoencoder
+    # --- Full autoencoder ---
     z_out, mu_out, log_variance_out = encoder(inputs)
     auto_outputs = decoder(z_out)
     auto = keras.Model(inputs, auto_outputs)
 
-    # KL divergence added directly via add_loss
+    # --- KL divergence added directly via add_loss ---
     kl_loss = -0.5 * keras.backend.sum(
         1 + log_variance_out - keras.backend.square(mu_out) -
-        keras.backend.exp(log_variance_out), axis=1)
+        keras.backend.exp(log_variance_out), axis=-1)
     auto.add_loss(keras.backend.mean(kl_loss))
 
-    # Reconstruction loss handled by compile()
-    auto.compile(optimizer='adam', loss='binary_crossentropy')
+    # --- Compilation: reconstruction loss handled by compile() ---
+    auto.compile(optimizer='adam', loss=reconstruction_loss)
 
     return encoder, decoder, auto
