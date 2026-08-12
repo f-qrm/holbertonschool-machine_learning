@@ -43,25 +43,30 @@ real_ex = tf.convert_to_tensor(normalized_array,dtype="float32")
 def recover(normalized) :
     return normalized*multiplier+mean_face
 
-def plot_400(G) :
-    Y=G.get_fake_sample(400)
-    Z=G.discriminator(Y)
-    Znu=Z.numpy()
-    Ynu=Y.numpy()
-    inds=np.argsort(Znu[:,0])
-    H=Ynu[inds,:,:,0]
-    fig,axes=plt.subplots(20,20,figsize=(20,20))
-    fig.subplots_adjust(top=0.95)
-    fig.suptitle("fake faces")
-    for i in range(400) :
-        axes[i//20,i%20].imshow(recover(H[i,:,:]))
-        axes[i//20,i%20].axis("off")
+def segment(ab,n):
+    x=np.linspace(0,1,n)
+    return (1-x)[:,None]*ab[0,:][None,:]+x[:,None]*ab[1,:][None,:]
+
+
+def plot_segment(G,ab,n) :
+    lats=tf.convert_to_tensor(segment(ab,n))
+    Y=G.generator(lats)[:,:,:,0]
+    fig,axes=plt.subplots(1,n,figsize=(n+1,1))
+    fig.subplots_adjust(top=0.8)
+    fig.suptitle("segment")
+    for i in range(n) :
+        axes[i].imshow(recover(Y[i,:,:]))
+        axes[i].axis("off")
+    plt.savefig("segment.png")
     plt.show()
+
 
 ## LET'S GO
 
-set_seeds(0)
+set_seeds(18)
 generator,discriminator = convolutional_GenDiscr()
 G=WGAN_GP(generator,discriminator,latent_generator, real_ex,batch_size=200, disc_iter=2,learning_rate=.001)
 G.replace_weights("generator.h5","discriminator.h5")
-plot_400(G)
+
+ab=np.random.randn(32).reshape([2,16])
+plot_segment(G,ab,20)
