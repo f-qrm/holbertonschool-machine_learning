@@ -55,19 +55,29 @@ def filter_dataset(df):
 
 def transform_normalize(df):
     """Convert prices to percentage change and standardize all columns."""
+    # On garde le Close reel (avant transformation) pour pouvoir
+    # reconstruire le prix final predit plus tard, dans forecast_btc.py
+    raw_close = df['Close'].copy()
     # pct_change() rend les prix stationnaires (variation relative plutot
     # que valeur absolue), ce qui aide le modele a mieux generaliser
     df[['Open', 'High', 'Low', 'Close']] = (
         df[['Open', 'High', 'Low', 'Close']].pct_change())
     df = df.dropna()
+    # On aligne raw_close sur les lignes restantes (la 1ere a ete droppee)
+    raw_close = raw_close.loc[df.index]
     scaler = StandardScaler()
     df_scaled = scaler.fit_transform(df)
-    return df_scaled
+    return df_scaled, raw_close.values, scaler
 
 
-def save_data(df, output_path):
-    """Save the final array to disk as a .npy file."""
+def save_data(df, raw_close, scaler, output_path):
+    """Save the scaled data, raw close prices, and scaler params to disk."""
     np.save(output_path, df)
+    # On sauvegarde le Close reel et les stats du scaler (moyenne/ecart-type)
+    # pour pouvoir reconvertir une prediction en un vrai prix en dollars
+    np.save(output_path.replace('.npy', '_close_raw.npy'), raw_close)
+    np.save(output_path.replace('.npy', '_scaler_params.npy'),
+            np.array([scaler.mean_, scaler.scale_]))
 
 
 if __name__ == "__main__":
@@ -80,5 +90,5 @@ if __name__ == "__main__":
     df_merged = merge_dataset(df_coinbase, df_bitstamp)
     df_clean = clean_resample(df_merged)
     df_filtred = filter_dataset(df_clean)
-    df_finla = transform_normalize(df_filtred)
-    save_data(df_finla, 'preprocessed_data.npy')
+    df_finla, raw_close, scaler = transform_normalize(df_filtred)
+    save_data(df_finla, raw_close, scaler, 'preprocessed_data.npy')

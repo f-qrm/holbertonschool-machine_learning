@@ -5,21 +5,27 @@ import tensorflow as tf
 
 
 def load_preprocessed(filepath):
-    """Load the preprocessed dataset from a .npy file."""
+    """Load the preprocessed dataset, raw close prices, and scaler params."""
     data = np.load(filepath)
-    return data
+    raw_close = np.load(filepath.replace('.npy', '_close_raw.npy'))
+    scaler_params = np.load(filepath.replace('.npy', '_scaler_params.npy'))
+    return data, raw_close, scaler_params
 
 
-def create_sequences(data, window_size=24):
-    """Turn the raw data into (X, y) sequences for supervised learning."""
+def create_sequences(data, raw_close, window_size=24):
+    """Turn the raw data into (X, y, base_price) sequences."""
     X = []
     y = []
+    base_price = []
     for i in range(len(data) - window_size):
         # La fenetre [i, i+window_size[ sert a predire le pas suivant
         X.append(data[i:i + window_size])
         # Colonne 3 = Close, c'est la valeur qu'on cherche a predire
         y.append(data[i + window_size, 3])
-    return np.array(X), np.array(y)
+        # Dernier prix reel connu avant la prediction, pour reconstruire
+        # le prix final a partir de la variation predite
+        base_price.append(raw_close[i + window_size - 1])
+    return np.array(X), np.array(y), np.array(base_price)
 
 
 def create_dataset(X, y, batch_size=32, shuffle=True):
@@ -34,7 +40,7 @@ def create_dataset(X, y, batch_size=32, shuffle=True):
     return dataset
 
 
-def split_data(X, y, train_ratio=0.8):
+def split_data(X, y, base_price, train_ratio=0.8):
     """Split sequences into train/validation sets, in chronological order."""
     # Pas de shuffle avant le split : ce sont des series temporelles,
     # la validation doit porter sur des dates plus recentes que le train,
@@ -42,7 +48,10 @@ def split_data(X, y, train_ratio=0.8):
     split_idx = int(len(X) * train_ratio)
     X_train, X_val = X[:split_idx], X[split_idx:]
     y_train, y_val = y[:split_idx], y[split_idx:]
-    return X_train, X_val, y_train, y_val
+    base_price_train = base_price[:split_idx]
+    base_price_val = base_price[split_idx:]
+    return (X_train, X_val, y_train, y_val,
+            base_price_train, base_price_val)
 
 
 def build_model(input_shape):
@@ -55,7 +64,7 @@ def build_model(input_shape):
         tf.keras.layers.Dropout(0.2),
         tf.keras.layers.LSTM(32),
         tf.keras.layers.Dropout(0.2),
-        # Une seule sortie : le prix (Close) predit
+        # Une seule sortie : la variation de prix (Close) predite
         tf.keras.layers.Dense(1)
     ])
     model.compile(
@@ -64,11 +73,24 @@ def build_model(input_shape):
     return model
 
 
+def reconstruct_price(base_price, scaled_variation, scaler_params):
+    """Convert a scaled predicted variation back into a real USD price."""
+    # Colonne 3 = Close dans le scaler (memes indices que dans les features)
+    mean_close, scale_close = scaler_params[0, 3], scaler_params[1, 3]
+    # On denormalise (inverse du StandardScaler)...
+    real_variation = scaled_variation * scale_close + mean_close
+    # ...puis on inverse le pct_change : prix = base * (1 + variation)
+    return base_price * (1 + real_variation)
+
+
 if __name__ == "__main__":
     # Donnees deja nettoyees/normalisees par preprocess_data.py
-    data = load_preprocessed('preprocessed_data.npy')
-    X, y = create_sequences(data, window_size=24)
-    X_train, X_val, y_train, y_val = split_data(X, y)
+    data, raw_close, scaler_params = load_preprocessed(
+        'preprocessed_data.npy')
+    X, y, base_price = create_sequences(data, raw_close, window_size=24)
+
+    (X_train, X_val, y_train, y_val,
+     base_price_train, base_price_val) = split_data(X, y, base_price)
 
     train_dataset = create_dataset(X_train, y_train, shuffle=True)
     # shuffle=False ici : on veut garder l'ordre chronologique en validation
@@ -85,3 +107,15 @@ if __name__ == "__main__":
         validation_data=val_dataset,
         epochs=50,
         callbacks=[early_stop])
+
+    # Reconstruction du prix reel en dollars, comme demande par le sujet
+    # ("predict the value of BTC"), a partir de la variation predite
+    predicted_scaled = model.predict(X_val).flatten()
+    predicted_prices = reconstruct_price(
+        base_price_val, predicted_scaled, scaler_params)
+    actual_prices = reconstruct_price(base_price_val, y_val, scaler_params)
+
+    print("Exemples de prix predits vs reels :")
+    for i in range(5):
+        print(f"Predit: ${predicted_prices[i]:.2f}  |  "
+              f"Reel: ${actual_prices[i]:.2f}")
