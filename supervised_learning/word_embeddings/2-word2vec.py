@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
 """Module that builds and trains a gensim word2vec model."""
+import os
+import sys
+
+# gensim n'est reproductible a seed fixe que si PYTHONHASHSEED est
+# lui-meme fixe des le demarrage de l'interpreteur : on relance le
+# process une fois avec cette variable positionnee si besoin.
+if os.environ.get("PYTHONHASHSEED") != "0":
+    os.environ["PYTHONHASHSEED"] = "0"
+    os.execv(sys.executable, [sys.executable] + sys.argv)
+
 import gensim
 
 
