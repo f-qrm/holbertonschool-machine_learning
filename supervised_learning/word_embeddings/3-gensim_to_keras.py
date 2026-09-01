@@ -25,6 +25,6 @@ def gensim_to_keras(model):
     # On initialise la couche Embedding avec les poids déjà appris,
     # trainable=True permet de continuer l'entraînement dans Keras
     em_layers = tf.keras.layers.Embedding(input_dim, output_dim,
-                          weights=[weights], trainable=True)
+                                          weights=[weights], trainable=True)
 
     return em_layers
