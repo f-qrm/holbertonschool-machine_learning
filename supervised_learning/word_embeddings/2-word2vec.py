@@ -28,16 +28,16 @@ def word2vec_model(sentences, vector_size=100, min_count=5, window=5,
     # gensim utilise sg=0 pour CBOW et sg=1 pour Skip-gram,
     # c'est donc l'inverse de notre booléen cbow
     if cbow:
-        sg = 0
+        cbow = 0
     else:
-        sg = 1
+        cbow = 1
 
     # En passant sentences directement au constructeur, gensim
     # construit le vocabulaire et entraîne le modèle automatiquement
     model = gensim.models.Word2Vec(sentences=sentences,
                                    vector_size=vector_size,
                                    min_count=min_count, window=window,
-                                   negative=negative, sg=sg, epochs=epochs,
+                                   negative=negative, sg=cbow, epochs=epochs,
                                    seed=seed, workers=workers)
 
     return model
