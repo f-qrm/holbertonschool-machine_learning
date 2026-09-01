@@ -49,3 +49,4 @@ unsupervised_learning/gan/discriminator.h5
 unsupervised_learning/gan/generator.h5
 supervised_learning/time_series/dataset/bitstampUSD_1-min_data_2012-01-01_to_2020-04-22.csv.zip
 supervised_learning/time_series/dataset/coinbaseUSD_1-min_data_2014-12-01_to_2019-01-09.csv.zip
+supervised_learning/.vscode/settings.json
