@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Module that defines the RNNEncoder class for machine translation."""
-import tensorflow
+import tensorflow as tf
 
 
-class RNNEncoder(tensorflow.keras.layers.Layer):
+class RNNEncoder(tf.keras.layers.Layer):
     """Encode the input sequence for the attention-based translation model."""
 
     def __init__(self, vocab, embedding, units, batch):
@@ -20,9 +20,9 @@ class RNNEncoder(tensorflow.keras.layers.Layer):
         self.units = units
         self.batch = batch
         # Couche d'embedding : transforme les indices de mots en vecteurs
-        self.embedding = tensorflow.keras.layers.Embedding(vocab, embedding)
+        self.embedding = tf.keras.layers.Embedding(vocab, embedding)
         # GRU qui renvoie toutes les sorties ainsi que l'état caché final
-        self.gru = tensorflow.keras.layers.GRU(
+        self.gru = tf.keras.layers.GRU(
             units,
             return_sequences=True,
             return_state=True,
@@ -37,7 +37,7 @@ class RNNEncoder(tensorflow.keras.layers.Layer):
             with zeros.
         """
         # Etat caché initial rempli de zéros, utilisé au premier pas de temps
-        hidden_state = tensorflow.zeros(shape=(self.batch, self.units))
+        hidden_state = tf.zeros(shape=(self.batch, self.units))
         return hidden_state
 
     def call(self, x, initial):
