@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Module that defines the SelfAttention class for machine translation."""
 import tensorflow as tf
-import numpy as np
 
 
 class SelfAttention(tf.keras.layers.Layer):
@@ -44,7 +43,7 @@ class SelfAttention(tf.keras.layers.Layer):
         # les états cachés de l'encodeur (broadcasting)
         s_prev_expanded = tf.expand_dims(s_prev, axis=1)
         # Score d'alignement entre l'état précédent et chaque état caché
-        e = self.V(np.tanh(self.W(s_prev_expanded) + self.U(hidden_states)))
+        e = self.V(tf.nn.tanh(self.W(s_prev_expanded) + self.U(hidden_states)))
         # Normalise les scores en poids d'attention (somme = 1)
         weights = tf.nn.softmax(e, axis=1)
         # Combinaison pondérée des états cachés selon les poids d'attention
