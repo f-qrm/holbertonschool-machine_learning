@@ -31,7 +31,7 @@ class RNNDecoder(tf.keras.layers.Layer):
             units,
             return_sequences=True,
             return_state=True,
-            recurrent_initializer="glorot_uniform")
+            recurrent_initializer='glorot_uniform')
         # Le GRU sort un vecteur de taille `units`, mais on doit prédire
         # un mot : F le reprojette sur toute la taille du vocabulaire
         # cible pour obtenir un score par mot possible
