@@ -72,9 +72,11 @@ class RNNDecoder(tf.keras.layers.Layer):
         context = tf.expand_dims(context, axis=1)
         # On donne au GRU à la fois le mot précédent ET le contexte
         # d'attention, pour que la prédiction du mot suivant tienne
-        # compte de ce qui a été traduit ET de ce qui reste à traduire
+        # compte de ce qui a été traduit ET de ce qui reste à traduire.
+        # s_prev sert uniquement à calculer l'attention ci-dessus : le
+        # GRU repart de son état initial par défaut à chaque appel
         x = tf.concat([context, x], axis=2)
-        outputs, s = self.gru(x, initial_state=s_prev)
+        outputs, s = self.gru(x)
         # Un seul mot est traité par appel donc la dimension temporelle
         # vaut 1 : on l'enlève pour repasser en (batch, units) avant F
         outputs = tf.squeeze(outputs, axis=1)
