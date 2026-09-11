@@ -14,11 +14,15 @@ class SelfAttention(tf.keras.layers.Layer):
             units (int): number of hidden units in the alignment model.
         """
         super().__init__()
-        # W s'applique à l'état précédent du décodeur
+        # On utilise deux couches denses séparées (W et U) car l'état du
+        # décodeur et les états de l'encodeur n'ont pas forcément le même
+        # sens ni la même échelle : chacun doit être projeté dans un
+        # espace commun avant de pouvoir être comparé/additionné
         self.W = tf.keras.layers.Dense(units=units)
-        # U s'applique aux états cachés de l'encodeur
         self.U = tf.keras.layers.Dense(units=units)
-        # V réduit le score d'alignement à une seule valeur par pas de temps
+        # V ramène le vecteur combiné à un seul score par pas de temps :
+        # c'est ce score qui dira "à quel point ce mot de la phrase
+        # source compte pour prédire le mot suivant"
         self.V = tf.keras.layers.Dense(units=1)
 
     def call(self, s_prev, hidden_states):
@@ -39,14 +43,22 @@ class SelfAttention(tf.keras.layers.Layer):
                 weights (tensorflow.Tensor): tensor of shape
                     (batch, input_seq_len, 1) with the attention weights.
         """
-        # Ajoute une dimension temporelle pour pouvoir additionner avec
-        # les états cachés de l'encodeur (broadcasting)
+        # s_prev n'a pas de dimension temporelle contrairement à
+        # hidden_states (qui en a une par mot de la phrase source) : on
+        # l'ajoute ici pour que l'addition qui suit se fasse par
+        # broadcasting sur chaque pas de temps
         s_prev_expanded = tf.expand_dims(s_prev, axis=1)
-        # Score d'alignement entre l'état précédent et chaque état caché
+        # tanh introduit la non-linéarité nécessaire pour que le modèle
+        # puisse apprendre une fonction d'alignement complexe plutôt
+        # qu'une simple combinaison linéaire
         e = self.V(tf.nn.tanh(self.W(s_prev_expanded) + self.U(hidden_states)))
-        # Normalise les scores en poids d'attention (somme = 1)
+        # softmax transforme les scores bruts en poids qui somment à 1,
+        # ce qui permet de les interpréter comme "combien d'attention on
+        # porte à chaque mot" et de faire une moyenne pondérée juste après
         weights = tf.nn.softmax(e, axis=1)
-        # Combinaison pondérée des états cachés selon les poids d'attention
+        # Chaque état caché est pondéré par son poids d'attention puis
+        # sommé : le résultat (context) concentre l'information des mots
+        # jugés pertinents pour générer le mot suivant
         weighted = weights * hidden_states
         context = tf.reduce_sum(weighted, axis=1)
         return context, weights
