@@ -26,7 +26,6 @@ class Decoder(tf.keras.layers.Layer):
         super().__init__()
         self.N = N
         self.dm = dm
-        self.h = h
         self.target_vocab = target_vocab
         self.max_seq_len = max_seq_len
         self.embedding = tf.keras.layers.Embedding(
@@ -65,10 +64,15 @@ class Decoder(tf.keras.layers.Layer):
             dm) containing the decoder's output.
         """
         x = self.embedding(x)
+        # On remet les embeddings à l'échelle de l'encodage positionnel
+        # (valeurs dans [-1, 1]) : sans ça, les embeddings (initialisés
+        # avec une variance beaucoup plus petite) seraient écrasés par
+        # l'encodage positionnel au lieu de s'y combiner équitablement
+        x *= tf.math.sqrt(tf.cast(self.dm, tf.float32))
         seq_len = tf.shape(x)[1]
         # On ne garde que les seq_len premières positions précalculées,
         # au cas où la séquence cible soit plus courte que max_seq_len
-        x += self.positional_encoding[:seq_len]
+        x = x + self.positional_encoding[:seq_len]
         x = self.dropout(x, training=training)
         # encoder_output et les masques sont identiques pour tous les
         # blocs : seule la sortie x évolue de bloc en bloc
