@@ -19,9 +19,14 @@ class RNNEncoder(tf.keras.layers.Layer):
         super().__init__()
         self.units = units
         self.batch = batch
-        # Couche d'embedding : transforme les indices de mots en vecteurs
+        # On passe par un embedding plutôt que par les indices bruts car
+        # le réseau apprend mieux sur des vecteurs denses continus, qui
+        # capturent en plus des similarités sémantiques entre les mots
         self.embedding = tf.keras.layers.Embedding(vocab, embedding)
-        # GRU qui renvoie toutes les sorties ainsi que l'état caché final
+        # return_sequences=True car le mécanisme d'attention (plus tard)
+        # a besoin de l'état caché à CHAQUE pas de temps, pas seulement
+        # du dernier ; return_state=True pour récupérer cet état final
+        # et pouvoir l'utiliser comme point de départ du décodeur
         self.gru = tf.keras.layers.GRU(
             units,
             return_sequences=True,
@@ -36,7 +41,9 @@ class RNNEncoder(tf.keras.layers.Layer):
             tensorflow.Tensor: a tensor of shape (batch, units) filled
             with zeros.
         """
-        # Etat caché initial rempli de zéros, utilisé au premier pas de temps
+        # Au tout premier pas de temps, le GRU n'a encore rien appris sur
+        # la séquence : on n'a donc aucune information a priori à lui
+        # donner, d'où un état initial à zéro
         hidden_state = tf.zeros(shape=(self.batch, self.units))
         return hidden_state
 
@@ -58,8 +65,11 @@ class RNNEncoder(tf.keras.layers.Layer):
                 hidden (tensorflow.Tensor): tensor of shape (batch, units)
                     with the last hidden state of the encoder.
         """
-        # Transforme les indices en vecteurs d'embedding
+        # Chaque indice de mot doit d'abord passer par l'embedding : le
+        # GRU ne sait travailler que sur des vecteurs, pas des entiers
         x = self.embedding(x)
-        # Passe la séquence dans le GRU en partant de l'état initial donné
+        # On impose explicitement l'état initial (au lieu de laisser
+        # Keras le générer par défaut) pour pouvoir le réutiliser d'un
+        # batch à l'autre via initialize_hidden_state
         outputs, hidden = self.gru(x, initial_state=initial)
         return outputs, hidden
