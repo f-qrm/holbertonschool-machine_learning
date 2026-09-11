@@ -59,6 +59,11 @@ class Encoder(tf.keras.layers.Layer):
             containing the encoder's output.
         """
         x = self.embedding(x)
+        # On remet les embeddings à l'échelle de l'encodage positionnel
+        # (valeurs dans [-1, 1]) : sans ça, les embeddings (initialisés
+        # avec une variance beaucoup plus petite) seraient écrasés par
+        # l'encodage positionnel au lieu de s'y combiner équitablement
+        x *= tf.math.sqrt(tf.cast(self.dm, tf.float32))
         seq_len = tf.shape(x)[1]
         # On ne prend que les seq_len premières positions de l'encodage
         # précalculé, au cas où la séquence reçue soit plus courte que
