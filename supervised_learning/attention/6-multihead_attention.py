@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Module that defines the MultiHeadAttention class for a transformer."""
 import tensorflow as tf
-import numpy as np
 sdp_attention = __import__('5-sdp_attention').sdp_attention
 
 
