@@ -63,9 +63,9 @@ class RNNDecoder(tf.keras.layers.Layer):
         # les mots de la phrase source pertinents changent au fil de la
         # traduction (c'est tout l'intérêt de l'attention vs un simple
         # encodeur-décodeur classique)
+        x = self.embedding(x)
         attention = SelfAttention(self.units)
         context, weights = attention(s_prev, hidden_states)
-        x = self.embedding(x)
         # context est de forme (batch, units) : on lui ajoute une
         # dimension temporelle pour pouvoir le concaténer avec x, qui a
         # lui une dimension de séquence (batch, 1, embedding)
