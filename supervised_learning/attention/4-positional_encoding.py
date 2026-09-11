@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Module that calculates the positional encoding for a transformer."""
-import tensorflow as tf
 import numpy as np
 
 
