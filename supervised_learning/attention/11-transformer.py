@@ -28,11 +28,6 @@ class Transformer(tf.keras.Model):
             drop_rate (float): dropout rate.
         """
         super().__init__()
-        self.N = N
-        self.dm = dm
-        self.h = h
-        self.hidden = hidden
-        self.input_vocab = input_vocab
         # max_seq_input/max_seq_target sont séparés (au lieu d'un seul
         # max_seq_len) car la phrase source et la phrase cible n'ont
         # aucune raison d'avoir la même longueur maximale, notamment
