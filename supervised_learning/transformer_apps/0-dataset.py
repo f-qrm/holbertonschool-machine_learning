@@ -46,8 +46,8 @@ class Dataset:
         # d'origine) pour que le tokenizer connaisse les mots specifiques
         # a ce jeu de donnees, tout en gardant une taille de vocabulaire
         # reduite (2**13) adaptee a un petit dataset.
-        tokenizer_pt = tokenizer_pt.train_new_form_iterator(
+        tokenizer_pt = tokenizer_pt.train_new_from_iterator(
             pt_sentences, vocab_size=2**13)
-        tokenizer_en = tokenizer_en.train_new_form_iteration(
+        tokenizer_en = tokenizer_en.train_new_from_iterator(
             en_sentences, vocab_size=2**13)
         return tokenizer_pt, tokenizer_en
