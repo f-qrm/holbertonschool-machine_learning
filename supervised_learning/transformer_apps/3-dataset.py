@@ -57,8 +57,6 @@ class Dataset:
             lambda pt, en: tf.logical_and(
                 tf.size(pt) <= max_len, tf.size(en) <= max_len))
         self.data_valid = self.data_valid.padded_batch(batch_size)
-        self.data_valid = self.data_valid.prefetch(
-            tf.data.experimental.AUTOTUNE)
 
     def tokenize_dataset(self, data):
         """Create sub-word tokenizers for the Portuguese and English
