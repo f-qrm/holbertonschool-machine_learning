@@ -37,5 +37,5 @@ def create_masks(inputs, target):
     # On combine les deux contraintes (futur + padding) en un seul
     # masque, applique en une seule fois lors de l'auto-attention du
     # decoder.
-    combined_mask = tf.max(look_ahead_mask, target_padding_mask)
+    combined_mask = tf.maximum(look_ahead_mask, target_padding_mask)
     return encoder_mask, combined_mask, decoder_mask
