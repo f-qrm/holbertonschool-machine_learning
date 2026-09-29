@@ -16,5 +16,5 @@ def load_frozen_lake(desc=None, map_name=None, is_slippery=False):
     """
     # If both desc and map_name are None, gym generates a random 8x8 map
     env = gym.make("FrozenLake-v1", desc=desc, map_name=map_name,
-                   is_slippery=is_slippery)
+                   is_slippery=is_slippery, render_mode="ansi")
     return env
