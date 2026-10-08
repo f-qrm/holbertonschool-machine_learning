@@ -1,16 +1,22 @@
 #!/usr/bin/env python3
 """Train a DQN agent to play Atari's Breakout with keras-rl2."""
+import sys
 import numpy as np
 import gymnasium as gym
 from gymnasium.wrappers import AtariPreprocessing
+import tensorflow as tf
+import tensorflow.keras
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, Dense, Flatten, Permute
+from tensorflow.keras.layers import Conv2D, Dense
+from tensorflow.keras.layers import Flatten, Permute
 from tensorflow.keras.optimizers.legacy import Adam
-from rl.agents.dqn import DQNAgent
-from rl.memory import SequentialMemory
-from rl.policy import EpsGreedyQPolicy, LinearAnnealedPolicy
-from rl.core import Processor
-from rl.callbacks import ModelIntervalCheckpoint
+# keras-rl2 lit tensorflow.keras.__version__ : à patcher avant d'importer rl
+sys.modules["tensorflow.keras"].__version__ = tf.__version__
+from rl.agents.dqn import DQNAgent  # noqa: E402
+from rl.memory import SequentialMemory  # noqa: E402
+from rl.policy import EpsGreedyQPolicy, LinearAnnealedPolicy  # noqa: E402
+from rl.core import Processor  # noqa: E402
+from rl.callbacks import ModelIntervalCheckpoint  # noqa: E402
 
 
 class KerasRLWrapper(gym.Wrapper):
