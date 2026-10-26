@@ -4,7 +4,7 @@ import numpy as np
 policy_gradient = __import__('policy_gradient').policy_gradient
 
 
-def train(env, nb_episodes, alpha=0.000045, gamma=0.98):
+def train(env, nb_episodes, alpha=0.000045, gamma=0.98, show_result=False):
     """
     Implements a full training using the Monte-Carlo policy gradient.
 
@@ -35,6 +35,8 @@ def train(env, nb_episodes, alpha=0.000045, gamma=0.98):
         while not done:
             action, grad = policy_gradient(state, weight)
             state, reward, terminated, truncated, _ = env.step(action)
+            if show_result and ep % 1000 == 0:
+                env.render()
             grads.append(grad)
             rewards.append(reward)
             done = terminated or truncated
