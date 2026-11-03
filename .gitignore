@@ -60,3 +60,6 @@ reinforcement_learning/deep_q_learning/train.log
 supervised_learning/qa_bot/test_model.tar.gz
 data/bitstampUSD_1-min_data_2012-01-01_to_2020-04-22.csv (1).zip
 data/coinbaseUSD_1-min_data_2014-12-01_to_2019-01-09.csv (1).zip
+data/bitstampUSD_1-min_data_2012-01-01_to_2020-04-22.csv
+.gitignore
+data/coinbaseUSD_1-min_data_2014-12-01_to_2019-01-09.csv
