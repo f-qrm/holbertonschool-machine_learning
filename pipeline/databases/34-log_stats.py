@@ -8,6 +8,8 @@ if __name__ == "__main__":
     total = nginx_collection.count_documents({})
     print("{} logs".format(total))
     methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
+    print("{} logs".format(total))
+    print("Methods:")
     for method in methods:
         count = nginx_collection.count_documents({"method": method})
         print("\tmethod {}: {}".format(method, count))
